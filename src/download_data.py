@@ -7,7 +7,7 @@ import hashlib
 import urllib.request
 from pathlib import Path
 
-from src.config import DATASET_SHA256, DATASET_URL, RAW_CSV_PATH
+from src.config import DATASET_SHA256, DATASET_URL, RAW_CSV_PATH, relative_to_project
 
 
 def sha256_of(path: Path) -> str:
@@ -22,7 +22,7 @@ def download_dataset(
     """Descarga el fichero si no existe ya una copia válida. Falla si el hash no coincide."""
     dest = Path(dest)
     if dest.exists() and sha256_of(dest) == expected_sha256:
-        print(f"Dataset ya descargado y verificado: {dest}")
+        print(f"Dataset ya descargado y verificado: {relative_to_project(dest)}")
         return dest
 
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -36,7 +36,7 @@ def download_dataset(
             f"SHA-256 inesperado ({actual_sha256}): el fichero descargado no es el esperado."
         )
     partial.replace(dest)
-    print(f"Dataset descargado y verificado: {dest}")
+    print(f"Dataset descargado y verificado: {relative_to_project(dest)}")
     return dest
 
 

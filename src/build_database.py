@@ -296,10 +296,10 @@ def build_database(
         write_raw_tables(conn, raw_tables)
     manifest.to_csv(manifest_path, index=False)
 
-    print(f"Base de datos creada: {db_path}")
+    print(f"Base de datos creada: {config.relative_to_project(db_path)}")
     for name, df in raw_tables.items():
         print(f"  raw_{name:<14} {len(df):>8,} filas")
-    print(f"Defectos inyectados: {len(manifest)} (manifiesto: {manifest_path})")
+    print(f"Defectos inyectados: {len(manifest)} (manifiesto: {config.relative_to_project(manifest_path)})")
     return manifest
 
 
