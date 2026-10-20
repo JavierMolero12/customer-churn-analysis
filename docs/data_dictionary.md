@@ -1,6 +1,6 @@
 # Diccionario de datos
 
-**v1.0 (Fase 1, diseño).** Se actualizará en la Fase 2 cuando las tablas existan y los recuentos se puedan comprobar con consultas.
+**v1.1 (Fase 2a).** Los tamaños de las tablas `raw_*` están verificados sobre la base de datos generada por `python -m src.build_database`.
 
 **Etiquetas de origen** (ver [diseño §3.2](01_project_design.md#32-origen-de-cada-dato-tres-etiquetas)):
 
@@ -18,7 +18,7 @@ Los recuentos de valores salen del perfil del CSV original (7.043 filas) y no in
 
 ### `raw_customers`
 
-Una fila por cliente, más 20 duplicados inyectados (D1).
+Una fila por cliente, más 20 duplicados inyectados (D1): **7.063 filas**.
 
 | Columna | Tipo | Origen | Columna original | Descripción | Valores |
 |---|---|---|---|---|---|
@@ -47,7 +47,9 @@ Una fila por cliente.
 
 ### `raw_services`
 
-Formato largo: una fila por servicio contratado. Un cliente puede tener entre 0 y 8 filas.
+Formato largo: una fila por servicio contratado. Un cliente puede tener entre 0 y 8 filas. En total, **23.685 filas** de 6.963 clientes.
+
+Filas por servicio: phone_service 6.361 · multiple_lines 2.971 · streaming_movies 2.732 · streaming_tv 2.707 · online_backup 2.429 · device_protection 2.422 · tech_support 2.044 · online_security 2.019.
 
 | Columna | Tipo | Origen | Columna original | Descripción |
 |---|---|---|---|---|
@@ -60,7 +62,7 @@ Formato largo: una fila por servicio contratado. Un cliente puede tener entre 0 
 
 ### `raw_payments`
 
-Una fila por mes facturado: 227.990 filas reconstruidas, más los defectos D5–D7.
+Una fila por mes facturado: 227.990 filas reconstruidas (de 2018-10-01 a 2024-09-01) más 90 inyectadas (D5–D7) = **228.080 filas**.
 
 | Columna | Tipo | Origen | Descripción |
 |---|---|---|---|

@@ -446,8 +446,8 @@ Cada fase se desarrolla en su rama y entra en `develop` mediante un Pull Request
 
 | Fase | Objetivo | Entregables principales | Rama → PR | Estado |
 |---|---|---|---|---|
-| 1. Diseño | Problema, dataset, modelo de datos, hipótesis, arquitectura | `docs/01_project_design.md`, `docs/data_dictionary.md`, esqueleto del repo | `feature/project-design` → PR #1 | En revisión |
-| 2a. Pipeline de datos | Descarga reproducible y base de datos normalizada | `config.py`, `database.py`, `download_data.py`, `build_database.py`, `00_schema.sql`, `requirements.txt`, test de reconstrucción | `feature/data-pipeline` → PR #2 | Pendiente |
+| 1. Diseño | Problema, dataset, modelo de datos, hipótesis, arquitectura | `docs/01_project_design.md`, `docs/data_dictionary.md`, esqueleto del repo | `feature/project-design` → PR #1 | Hecho |
+| 2a. Pipeline de datos | Descarga reproducible y base de datos normalizada | `config.py`, `database.py`, `download_data.py`, `build_database.py`, `00_schema.sql`, `requirements.txt`, test de reconstrucción | `feature/data-pipeline` → PR #2 | Hecho |
 | 2b. Calidad y limpieza | Detectar y corregir problemas | `01_data_quality.sql`, `data_cleaning.py`, notebook 01, tests de limpieza | `feature/data-quality` → PR #3 | Pendiente |
 | 2c. SQL de negocio | Tabla final por cliente y consultas analíticas | `02_customer_features.sql`, `03_analysis.sql` | `feature/sql-features` → PR #4 | Pendiente |
 | 3. EDA y estadística | Descriptivos, distribuciones, hipótesis H1–H8 | Notebook 02, `reports/figures/` | `feature/eda-statistics` → PR #5 | Pendiente |
