@@ -469,4 +469,5 @@ Borra la carpeta `.venv` (y la carpeta `data`, si quieres) y repite desde el pas
 - **Diseño completo:** [`docs/01_project_design.md`](docs/01_project_design.md). Incluye el problema, las 8 hipótesis fijadas antes del análisis, los riesgos de *data leakage* y la hoja de ruta.
 - **Diccionario de datos:** [`docs/data_dictionary.md`](docs/data_dictionary.md).
 - **Historial de trabajo:** cada fase se desarrolló en su propia rama y entró mediante un Pull Request ([`docs/pull_requests/`](docs/pull_requests/)).
+- **Versiones:** qué incluye cada versión publicada, en el [`CHANGELOG.md`](CHANGELOG.md).
 - **Datos:** *Telco Customer Churn* de IBM, del repositorio [IBM/telco-customer-churn-on-icp4d](https://github.com/IBM/telco-customer-churn-on-icp4d) (licencia Apache 2.0). Empresa ficticia: no son datos de clientes reales. El fichero no se incluye en este repositorio; el paso 8 lo descarga.
