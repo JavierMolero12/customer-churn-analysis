@@ -1,0 +1,3 @@
+# Normaliza los saltos de línea a LF en el repositorio (evita diffs ruidosos entre Windows y Linux/Mac)
+* text=auto eol=lf
+*.png binary
