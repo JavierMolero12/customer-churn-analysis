@@ -1,6 +1,6 @@
 # Diccionario de datos
 
-**v1.1 (Fase 2a).** Los tamaños de las tablas `raw_*` están verificados sobre la base de datos generada por `python -m src.build_database`.
+**v1.2 (Fase 2c).** Tamaños de tabla y columnas verificados sobre la base de datos generada por `python -m src.pipeline`.
 
 **Etiquetas de origen** (ver [diseño §3.2](01_project_design.md#32-origen-de-cada-dato-tres-etiquetas)):
 
@@ -88,9 +88,9 @@ Cada decisión se justifica en el notebook 01. Un test comprueba que las tablas 
 
 ---
 
-## `customer_features`: tabla final por cliente (planificada)
+## `customer_features`: tabla final por cliente
 
-Se genera con `sql/02_customer_features.sql`, salvo las marcadas como Python, que calcula `src/feature_engineering.py`. La lista definitiva se cierra en la Fase 4.
+La genera `sql/02_customer_features.sql` (Fase 2c): **7.043 filas × 27 columnas**, exportadas a `data/processed/customer_features.csv` con `python -m src.pipeline`. Las variables marcadas como *(Fase 4)* las calculará `src/feature_engineering.py` en Python; la selección final para el modelo se decide en la Fase 4.
 
 | Variable | Cálculo previsto | Origen | Riesgo de leakage |
 |---|---|---|---|
@@ -102,11 +102,13 @@ Se genera con `sql/02_customer_features.sql`, salvo las marcadas como Python, qu
 | `tenure_months` | Meses entre `start_date` y la fecha de corte (funciones de fecha) | REAL (recalculado) | Bajo, ver L3. Siempre hasta la fecha de corte, nunca hasta `end_date` (L2) |
 | `monthly_charges` | — | REAL | Ninguno |
 | `n_payments`, `total_revenue` | `COUNT` / `SUM` sobre `payments` | REAL (vía agregados) | `total_revenue ≈ tenure × cuota` → colinealidad (R5) |
-| `avg_historical_charge` | Media de los pagos excepto el último (window function) | REAL (vía agregados) | Ninguno |
+| `avg_historical_charge` | Media de los pagos excepto el último (window function). NULL en 624 clientes con `tenure < 2` (11 con 0 + 613 con 1) | REAL (vía agregados) | Ninguno |
 | `price_change_ratio` | `monthly_charges / avg_historical_charge` (`tenure ≥ 2`) | REAL (vía agregados) | Ninguno. Interpretación incierta (H6) |
 | `n_services`, `n_addon_services` | `LEFT JOIN services` + `COUNT`, `COALESCE(…, 0)` | REAL | Ninguno |
 | `has_<servicio>` | Agregación condicional `MAX(CASE WHEN …)` | REAL | Ninguno |
-| `tenure_bucket` | Tramos 0–6, 7–12, 13–24, 25–48, 49–72 (Python, para EDA) | DERIVADO | Ninguno |
+| `tenure_bucket` *(Fase 4)* | Tramos 0–6, 7–12, 13–24, 25–48, 49–72 (Python) | DERIVADO | Ninguno |
 | **`churn`** | `CASE WHEN end_date IS NOT NULL THEN 1 ELSE 0 END` | REAL (codificado) | **Es el objetivo** |
+
+`total_charges` no se incluye porque coincide con `total_revenue` (lo comprueba un test).
 
 **Excluidas del modelo por diseño:** `customer_id`, `signup_date`, `start_date`, `end_date` y cualquier variable calculada con `end_date`.
