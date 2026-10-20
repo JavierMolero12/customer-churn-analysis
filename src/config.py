@@ -59,3 +59,9 @@ PAYMENT_METHODS = [
     "Credit card (automatic)",
 ]
 INTERNET_SERVICES = ["DSL", "Fiber optic", "No"]
+
+
+def relative_to_project(path: Path) -> Path:
+    """Ruta relativa al proyecto para mostrar en mensajes (no expone rutas personales del equipo)."""
+    path = Path(path).resolve()
+    return path.relative_to(PROJECT_ROOT) if path.is_relative_to(PROJECT_ROOT) else path
