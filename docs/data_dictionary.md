@@ -90,7 +90,7 @@ Cada decisión se justifica en el notebook 01. Un test comprueba que las tablas 
 
 ## `customer_features`: tabla final por cliente
 
-La genera `sql/02_customer_features.sql` (Fase 2c): **7.043 filas × 27 columnas**, exportadas a `data/processed/customer_features.csv` con `python -m src.pipeline`. Las variables marcadas como *(Fase 4)* las calculará `src/feature_engineering.py` en Python; la selección final para el modelo se decide en la Fase 4.
+La genera `sql/02_customer_features.sql` (Fase 2c): **7.043 filas × 27 columnas**, exportadas a `data/processed/customer_features.csv` con `python -m src.pipeline`. Las variables marcadas como *(Fase 4)* las calcula `src/feature_engineering.py` en Python; la selección para el modelo está en la sección siguiente.
 
 | Variable | Cálculo previsto | Origen | Riesgo de leakage |
 |---|---|---|---|
@@ -106,9 +106,38 @@ La genera `sql/02_customer_features.sql` (Fase 2c): **7.043 filas × 27 columnas
 | `price_change_ratio` | `monthly_charges / avg_historical_charge` (`tenure ≥ 2`) | REAL (vía agregados) | Ninguno. Interpretación incierta (H6) |
 | `n_services`, `n_addon_services` | `LEFT JOIN services` + `COUNT`, `COALESCE(…, 0)` | REAL | Ninguno |
 | `has_<servicio>` | Agregación condicional `MAX(CASE WHEN …)` | REAL | Ninguno |
-| `tenure_bucket` *(Fase 4)* | Tramos 0–6, 7–12, 13–24, 25–48, 49–72 (Python) | DERIVADO | Ninguno |
+| `tenure_bucket` *(Fase 4)* | Tramos 0–6, 7–12, 13–24, 25–48, 49–72 (`pd.cut`, límite superior incluido) | DERIVADO | Ninguno |
+| `has_price_history` *(Fase 4)* | 1 si `tenure_months ≥ 2`: `price_change_ratio` es un valor observado y no imputado | DERIVADO | Ninguno |
 | **`churn`** | `CASE WHEN end_date IS NOT NULL THEN 1 ELSE 0 END` | REAL (codificado) | **Es el objetivo** |
 
 `total_charges` no se incluye porque coincide con `total_revenue` (lo comprueba un test).
 
 **Excluidas del modelo por diseño:** `customer_id`, `signup_date`, `start_date`, `end_date` y cualquier variable calculada con `end_date`.
+
+---
+
+## Variables del modelo (Fase 4)
+
+Las elige y prepara `src/feature_engineering.py`. Las redundancias se midieron **solo con train** (80 %, estratificado, semilla 42), para no tomar decisiones de modelado mirando el test (L5). `python -m src.feature_engineering` imprime la división, las exclusiones y la tabla de VIF.
+
+**Entran (19 columnas → 26 tras el preprocesado):**
+
+| Grupo | Variables | Preprocesado |
+|---|---|---|
+| Numéricas | `tenure_months`, `monthly_charges` | `StandardScaler` |
+| Cambio de precio | `price_change_ratio` | Imputación constante 1,0 ("sin cambio") si `tenure < 2` + `StandardScaler` |
+| Binarias 0/1 | `has_partner`, `has_dependents`, `is_paperless`, `has_phone_service`, `has_multiple_lines`, los 6 `has_<servicio adicional>`, `has_price_history` | Sin cambios |
+| Categóricas | `contract_type`, `internet_service`, `payment_method`, `tenure_bucket` | One-hot con categorías fijas; la primera es la referencia (contrato mensual, DSL, cheque electrónico, 0–6 meses) |
+
+**No entran:**
+
+| Variable | Motivo | Evidencia (train) |
+|---|---|---|
+| `is_male`, `is_senior` | Atributos sensibles. No son una palanca de negocio y decidir a quién se ofrece una retención por sexo o edad puede discriminar | `is_senior` sí está asociada al churn (42 % frente a 24 %). La Fase 5 medirá con `include_sensitive=True` cuánto rendimiento cuesta excluirla |
+| `n_payments` | Idéntica a `tenure_months` (un pago por mes facturado) | Iguales en el 100 % de los clientes |
+| `total_revenue` | `≈ tenure_months × monthly_charges` (R5) | r = 0,9996; VIF 10,4 |
+| `avg_historical_charge` | `≈ monthly_charges`; su información útil ya está en `price_change_ratio` | r = 0,992; VIF 203 |
+| `n_services`, `n_addon_services` | Sumas exactas de los indicadores `has_*`, que sí entran | Iguales en el 100 % de los clientes |
+| `is_auto_payment` | Se deduce de `payment_method`, que entra con sus 4 categorías | — |
+
+Con la selección, el VIF de las numéricas baja a 1,0–1,1 (sin redundancia relevante).
