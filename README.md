@@ -2,7 +2,7 @@
 
 **Análisis y predicción del abandono de clientes con SQL, Python y Machine Learning.**
 
-> **Estado del proyecto:** en desarrollo. Están terminados el diseño, la preparación de datos, el SQL y la limpieza (fases 1 y 2). Lo siguiente es el análisis estadístico. [Ver hoja de ruta](#estado-del-proyecto).
+> **Estado del proyecto:** en desarrollo. Están terminados el diseño, la preparación de datos, el SQL y la limpieza (fases 1 y 2) y la preparación de variables para el modelo (fase 4). Falta el análisis estadístico (fase 3) y después el modelo. [Ver hoja de ruta](#estado-del-proyecto).
 
 ---
 
@@ -48,7 +48,8 @@ python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 python -m pip install -r requirements.txt
 python -m src.pipeline           # descarga, base de datos, limpieza y tabla final (~5 s)
-python -m pytest                 # 15 tests
+python -m src.feature_engineering # división train/test y variables del modelo
+python -m pytest                 # 20 tests
 jupyter lab                      # notebooks en notebooks/
 ```
 
@@ -230,7 +231,7 @@ python -m pytest
 
 **Qué hace:** ejecuta los *tests*, pequeños programas que comprueban automáticamente que el proyecto funciona. Por ejemplo, que no hay clientes repetidos o que la limpieza no ha perdido datos.
 
-**Qué deberías ver:** una línea de puntos y, al final, **`15 passed`**. Si alguno fallara, verías `failed` y una explicación del motivo.
+**Qué deberías ver:** una línea de puntos y, al final, **`20 passed`**. Si alguno fallara, verías `failed` y una explicación del motivo.
 
 ---
 
@@ -457,7 +458,7 @@ Borra la carpeta `.venv` (y la carpeta `data`, si quieres) y repite desde el pas
 | 1. Diseño | Problema, dataset, modelo de datos, hipótesis, riesgos | ✅ Hecho |
 | 2. Datos y SQL | Descarga, base de datos, calidad, limpieza, tabla final | ✅ Hecho |
 | 3. Estadística | Estadística descriptiva y contraste de las 8 hipótesis | ⏳ Siguiente |
-| 4. Variables | Preparación de variables para el modelo | Pendiente |
+| 4. Variables | Preparación de variables para el modelo, sin fugas de información | ✅ Hecho |
 | 5–6. Modelo | Modelos de Machine Learning, evaluación e interpretación | Pendiente |
 | 7–8. Negocio y documentación | Recomendaciones, resumen para no técnicos, informe final | Pendiente |
 | 9–10. Revisión | Pulido del flujo de Git y revisión final (versión 1.0) | Pendiente |

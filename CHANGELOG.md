@@ -2,6 +2,16 @@
 
 Cambios relevantes de cada versión del proyecto. El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y las versiones siguen [versionado semántico](https://semver.org/lang/es/): mientras la versión empiece por `0.`, el proyecto está en desarrollo.
 
+## [Sin publicar]
+
+### Añadido
+
+- **Feature engineering** (fase 4, [#7](https://github.com/JavierMolero12/customer-churn-analysis/pull/7)):
+  - `src/feature_engineering.py`: variables `tenure_bucket` y `has_price_history`, selección de variables con su motivo, división train/test estratificada y `ColumnTransformer` que solo aprende de train;
+  - redundancias medidas solo con train (VIF): fuera `n_payments`, `total_revenue`, `avg_historical_charge`, `n_services`, `n_addon_services` e `is_auto_payment`;
+  - atributos sensibles (`is_male`, `is_senior`) excluidos por defecto;
+  - 5 tests nuevos (20 en total).
+
 ## [0.2.0] — 2026-10-20
 
 Primera versión publicada: **diseño, datos, SQL y limpieza** (fases 1 y 2 del [roadmap](docs/01_project_design.md#8-roadmap)). El proyecto se puede descargar y ejecutar de principio a fin con un comando; el análisis estadístico y el modelo llegarán en próximas versiones.

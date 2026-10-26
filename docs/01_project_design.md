@@ -451,10 +451,10 @@ Cada fase se desarrolla en su rama y entra en `develop` mediante un Pull Request
 | 2a. Pipeline de datos | Descarga reproducible y base de datos normalizada | `config.py`, `database.py`, `download_data.py`, `build_database.py`, `00_schema.sql`, `requirements.txt`, test de reconstrucción | `feature/data-pipeline` → PR #2 | Hecho |
 | 2b. Calidad y limpieza | Detectar y corregir problemas | `01_data_quality.sql`, `data_cleaning.py`, notebook 01, tests de limpieza | `feature/data-quality` → PR #3 | Hecho |
 | 2c. SQL de negocio | Tabla final por cliente y consultas analíticas | `02_customer_features.sql`, `03_analysis.sql` | `feature/sql-features` → PR #4 | Hecho |
-| 3. EDA y estadística | Descriptivos, distribuciones, hipótesis H1–H8 | Notebook 02, `reports/figures/` | `feature/eda-statistics` → PR #5 | Pendiente |
-| 4. Feature engineering | Variables, preprocesado, control de leakage | `feature_engineering.py`, `test_features.py` | `feature/feature-engineering` → PR #6 | Pendiente |
-| 5–6. Modelado y evaluación | Baselines, logística, Random Forest, métricas, umbral, interpretación | `modeling.py`, notebook 03 | `feature/modeling` → PR #7 | Pendiente |
-| 7–8. Recomendaciones y documentación | Executive Summary, informe técnico, README final | `reports/analysis_report.md`, `README.md` | `feature/documentation` → PR #8 | Pendiente |
+| 3. EDA y estadística | Descriptivos, distribuciones, hipótesis H1–H8 | Notebook 02, `reports/figures/` | `feature/eda-statistics` → PR | Pendiente |
+| 4. Feature engineering | Variables, preprocesado, control de leakage | `feature_engineering.py`, `test_features.py` | `feature/feature-engineering` → PR #7 | Hecho |
+| 5–6. Modelado y evaluación | Baselines, logística, Random Forest, métricas, umbral, interpretación | `modeling.py`, notebook 03 | `feature/modeling` → PR | Pendiente |
+| 7–8. Recomendaciones y documentación | Executive Summary, informe técnico, README final | `reports/analysis_report.md`, `README.md` | `feature/documentation` → PR | Pendiente |
 | 9. Git/GitHub | Transversal: se aplica en cada fase. Al final se pulen las descripciones de PR para el portfolio | `docs/pull_requests/` | (en cada PR) | Transversal |
 | 10. Revisión final | Ejecución desde cero, revisión crítica, release | Checklist de portfolio, tag `v1.0.0` | `develop` → `main` (PR de release) | Pendiente |
 
