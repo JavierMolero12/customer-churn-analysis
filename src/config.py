@@ -60,6 +60,13 @@ PAYMENT_METHODS = [
 ]
 INTERNET_SERVICES = ["DSL", "Fiber optic", "No"]
 
+# Tramos de antigüedad fijados en el diseño (H4). Límites superiores incluidos: 0–6, 7–12…
+TENURE_BUCKET_EDGES = [0, 6, 12, 24, 48, 72]
+TENURE_BUCKETS = ["0-6", "7-12", "13-24", "25-48", "49-72"]
+
+# División train/test fijada en el diseño (§6.2).
+TEST_SIZE = 0.2
+
 
 def relative_to_project(path: Path) -> Path:
     """Ruta relativa al proyecto para mostrar en mensajes (no expone rutas personales del equipo)."""
